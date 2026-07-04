@@ -6,6 +6,13 @@
       "source_url": "https://github.com/YuanTian-SJTU/team-skills/blob/main/skills/ai-native-strategy/SKILL.md",
       "skill_file_url": "https://github.com/YuanTian-SJTU/team-skills/blob/main/skills/ai-native-strategy.skill",
       "raw_url": "https://raw.githubusercontent.com/YuanTian-SJTU/team-skills/main/skills/ai-native-strategy.skill"
+    },
+    {
+      "name": "push-skill-to-github",
+      "description": "Use this skill whenever the user wants to push, publish, share, or sync a skill to GitHub — for team sharing, version control, or building a team skill library. Trigger on: \"push skill to github\", \"sh",
+      "source_url": "https://github.com/YuanTian-SJTU/team-skills/blob/main/skills/push-skill-to-github/SKILL.md",
+      "skill_file_url": "https://github.com/YuanTian-SJTU/team-skills/blob/main/skills/push-skill-to-github.skill",
+      "raw_url": "https://raw.githubusercontent.com/YuanTian-SJTU/team-skills/main/skills/push-skill-to-github.skill"
     }
   ]
 }
