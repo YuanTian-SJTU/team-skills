@@ -1,0 +1,11 @@
+{
+  "skills": [
+    {
+      "name": "ai-native-strategy",
+      "description": "Use this skill whenever a user wants to design, plan, analyze, or evaluate the technical strategy and architecture of an AI-native product. Trigger on any of the following: mentions of \"AI原生产品\", \"AI产品",
+      "source_url": "https://github.com/YuanTian-SJTU/team-skills/blob/main/skills/ai-native-strategy/SKILL.md",
+      "skill_file_url": "https://github.com/YuanTian-SJTU/team-skills/blob/main/skills/ai-native-strategy.skill",
+      "raw_url": "https://raw.githubusercontent.com/YuanTian-SJTU/team-skills/main/skills/ai-native-strategy.skill"
+    }
+  ]
+}
