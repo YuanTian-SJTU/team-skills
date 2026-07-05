@@ -8,6 +8,13 @@
       "raw_url": "https://raw.githubusercontent.com/YuanTian-SJTU/team-skills/main/skills/ai-native-strategy.skill"
     },
     {
+      "name": "ontology-kb",
+      "description": "Personal ontology knowledge base — captures inspirations, ideas, quotes, and fragments of thought with deep semantic structure. Use this skill whenever the user wants to: record an idea, insight, or q",
+      "source_url": "https://github.com/YuanTian-SJTU/team-skills/blob/main/skills/ontology-kb/SKILL.md",
+      "skill_file_url": "https://github.com/YuanTian-SJTU/team-skills/blob/main/skills/ontology-kb.skill",
+      "raw_url": "https://raw.githubusercontent.com/YuanTian-SJTU/team-skills/main/skills/ontology-kb.skill"
+    },
+    {
       "name": "push-skill-to-github",
       "description": "Use this skill whenever the user wants to push, publish, share, or sync a skill to GitHub — for team sharing, version control, or building a team skill library. Trigger on: \"push skill to github\", \"sh",
       "source_url": "https://github.com/YuanTian-SJTU/team-skills/blob/main/skills/push-skill-to-github/SKILL.md",
