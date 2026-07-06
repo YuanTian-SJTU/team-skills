@@ -7,10 +7,11 @@ description: |
   "RAG架构", "Agent架构", "知识图谱", "AI产品设计", "数据飞轮", "AI战略报告";
   or requests to design an AI-first product from scratch; or evaluate technology choices
   for an AI product; or produce a strategy report / architecture document / pitch deck
-  for an AI product for investors or executives. This skill is especially valuable when
-  the user wants to articulate WHY their product is transformatively AI-native rather
-  than just AI-enhanced. Always invoke this skill when the user's goal is to produce a
-  deliverable (report, architecture doc, PPT) about an AI product strategy.
+  for an AI product for investors or executives. Also trigger when the user wants to
+  record or capture stakeholder research inputs — such as interviews with CEO, investors,
+  CTO, CPO, domain experts, or early users — before or during architecture design.
+  This skill is especially valuable when the user wants to articulate WHY their product
+  is transformatively AI-native rather than just AI-enhanced.
 ---
 
 # AI-Native Product Technical Strategy & Architecture
@@ -29,6 +30,10 @@ architecture of an AI-native product, then generate deliverables at two levels:
 - Technical Layer → Data Schema Draft + Orient Prompt Template + ERP Integration Checklist
 - Application Layer → User Stories + Main User Flow + Notification Specification
 
+**Stakeholder research documents** (captured before or during architecture design):
+- Per-stakeholder interview records (CEO, investor, CTO, CPO, domain expert, seed user)
+- Multi-stakeholder synthesis (alignment, tensions, gaps, layer-by-layer implications)
+
 The central narrative thread throughout all work: **AI-native ≠ AI-enhanced.**
 An AI-native product is one that would be impossible — not merely worse — without AI.
 This distinction is what makes it transformative, and it must be visible in every
@@ -45,15 +50,62 @@ not appear verbatim in any user-facing output.
 
 ---
 
+## Mode Detection
+
+At the start of each session, determine which mode the user is in:
+
+**Mode A — Stakeholder Research**
+Triggered when the user mentions: recording an interview, capturing inputs from a
+specific stakeholder role (CEO, investor, CTO, CPO, domain expert, early user),
+or says something like "记录CEO的想法", "投资人反馈", "访谈记录", "用户调研".
+→ Load references/06-stakeholder-research.md and enter Capture Mode.
+→ After each interview, offer: "要生成利益相关者综合分析吗？"
+
+**Mode B — Architecture Design**
+Triggered when the user wants to design, plan, or analyze the AI product strategy.
+→ Run Phases 1–4 below.
+→ Before starting Phase 1, check if stakeholder research documents exist in this
+  session or if the user mentions having done stakeholder research. If yes, offer
+  to run Synthesis Mode first: "检测到已有利益相关者调研记录，是否先生成综合分析，
+  作为架构设计的输入？"
+
+Both modes can run in the same session. Stakeholder research can happen before,
+during, or after architecture design.
+
+---
+
 ## Workflow
+
+### Phase 0 — Stakeholder Research (Mode A, load references/06-stakeholder-research.md)
+
+**Capture Mode**: Interview one stakeholder at a time using the template for their type.
+Run sections one at a time — never present all questions at once. After each section,
+summarize what you heard before moving to the next. At the end, produce a structured
+stakeholder document and save it as a file.
+
+**Synthesis Mode**: When two or more stakeholder documents exist, produce a
+multi-stakeholder synthesis that surfaces alignment, tensions, and gaps across all
+inputs, organized by architecture layer. This synthesis becomes the starting context
+for Phase 2.
+
+Stakeholder types supported: CEO/创始人, 投资人/VC, CTO/技术负责人, CPO/产品负责人,
+域专家/行业顾问, 种子用户/早期目标用户.
+
+---
 
 ### Phase 1 — Diagnosis (load references/00-diagnosis.md)
 
 Run the 8-step progressive dialogue. Each step waits for the user's answer before
 proceeding to the next. Do NOT present all questions at once.
 
+If a stakeholder synthesis exists from Phase 0, use it to pre-fill answers where
+possible and skip questions the synthesis already answered. Tell the user which
+questions you're skipping and why.
+
 After Step 8, synthesize a Product Brief (1-2 paragraphs) and show it to the
 user for confirmation before proceeding.
+
+---
 
 ### Phase 2 — Layer Analysis (user-selectable)
 
@@ -69,13 +121,15 @@ For each selected layer, load the corresponding reference file and conduct the
 analysis. Output per layer: key decisions + recommended approach + risk flags.
 Let the user steer depth — they can ask to go deeper on any sub-topic.
 
+Where stakeholder research documents exist, weave their inputs into the analysis
+explicitly — cite which stakeholder raised which concern or constraint.
+
 **After completing EACH layer analysis, always ask:**
 "需要为这一层生成执行级补充文档吗？这类文档面向开发团队或产品团队，
  粒度比战略分析更细，可以直接指导开工。"
 
 If the user says yes, load the corresponding reference and generate the
-execution-level supplement before moving to the next layer. See the
-"Execution-Level Supplements" section in each reference file for what to produce.
+execution-level supplement before moving to the next layer.
 
 Reference routing:
 - Business layer    → load references/01-business-layer.md
@@ -83,6 +137,9 @@ Reference routing:
 - Technical layer   → load references/03-technical-layer.md
 - Data layer        → load references/04-data-layer.md
 - Output format     → load references/05-output-templates.md
+- Stakeholder research → load references/06-stakeholder-research.md
+
+---
 
 ### Phase 3 — Document Generation
 
@@ -94,6 +151,8 @@ which deliverables they want:
 
 Generate the selected documents following the templates exactly.
 Save files to the working directory and present them to the user.
+
+---
 
 ### Phase 4 — PPT Generation
 
@@ -141,3 +200,9 @@ difference before generating anything:
   interaction flows, notification specs
 - Format: structured specifications that teams can act on directly
 - These are separate files from the strategy report, not included in it
+
+**Stakeholder Research Level** (Phase 0, Mode A):
+- Audience: architecture design sessions; the person building the strategy
+- Granularity: "who thinks what and why" — raw inputs organized by stakeholder
+- Format: per-person interview records + multi-stakeholder synthesis
+- These feed into Phase 1 and Phase 2 as input context, not as deliverables themselves
