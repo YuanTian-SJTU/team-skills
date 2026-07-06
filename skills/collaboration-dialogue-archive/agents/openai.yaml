@@ -1,0 +1,5 @@
+interface:
+  display_name: "协作对话归档"
+  short_description: "记录合作者对话，沉淀为AI原生平台战略输入"
+  default_prompt: "Use $collaboration-dialogue-archive to archive this collaborator conversation and extract AI-native platform implications."
+
