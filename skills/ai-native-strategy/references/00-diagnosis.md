@@ -1,5 +1,30 @@
 # Phase 1: Progressive Diagnosis Questionnaire
 
+## Step 0 — Project Identification
+
+Ask this before anything else, every session:
+
+"这个分析属于哪个项目？请给这个项目起一个简短的名字（中文或英文都可以，我会自动转成标准格式）。
+ 如果是新项目，给个名字；如果是已有项目的更新版分析，告诉我项目名。"
+
+From the user's answer, derive a **Project ID**:
+- Convert to lowercase kebab-case English
+- Max 30 characters
+- Remove special characters
+- Examples: "智慧供应链决策系统" → `smart-supply-chain`, "医疗AI平台" → `medical-ai-platform`
+
+Show the derived ID to the user for confirmation:
+"项目ID：`<project-id>`，所有文件将存放在 `analysis/<project-id>/` 下。确认吗？"
+
+Store `{project_id}` and `{analysis_date}` (current YYYY-MM) as session variables.
+Reference these in every file name and GitHub path generated in this session.
+
+If the user says this is a version update of an existing project, note the previous
+version date so Mode C (version comparison) can reference it.
+
+---
+
+
 Run these 8 steps one at a time. Wait for the user's answer before continuing.
 After Step 8, write a Product Brief and ask the user to confirm it.
 
@@ -143,3 +168,115 @@ Ask: "这份产品摘要准确吗？有需要补充或修正的地方吗？"
      "Does this Product Brief look accurate? Anything to add or correct?"
 
 Proceed to Phase 2 only after user confirms.
+
+---
+
+## Step 9 — Founding Team Asset Assessment
+*(Only run this step when the product is being built by a founding team with existing
+ domain operations or technology — i.e., this is not a first-time researcher building
+ a prototype. Skip if the user is designing a hypothetical product.)*
+
+This step surfaces the team's non-replicable starting advantages. The goal is not
+to list credentials but to identify what competitors would need 3-5 years to replicate.
+Run sub-questions one at a time. Probe for specifics — vague answers ("we have good
+relationships") are not useful. Ask: "Can you give me a concrete example?"
+
+**Sub-step 9A — Market Position & Customer Assets**
+
+Ask: "目前有多少活跃客户/合作方？能描述一下最核心的3-5家吗——规模、合作年限、你们在他们采购中的占比？"
+     "How many active customers/partners do you have? Describe the top 3-5 —
+      their size, years of relationship, and your share of their procurement."
+
+Listen for:
+- Customer concentration risk (top 1 customer = >40% of revenue is a flag)
+- Depth of relationships (can they call the CEO directly? Do they have exclusivity?)
+- Whether customers would be the first users of the AI product
+
+**Sub-step 9B — Supply Chain & Upstream Relationships**
+
+Ask: "上游（钢厂/一级代理/物流/金融机构）有哪些直接合作关系？有没有独家或优先协议？"
+     "What direct relationships do you have upstream (mills, tier-1 agents, logistics,
+      financial institutions)? Any exclusive or preferred arrangements?"
+
+Listen for:
+- Direct mill relationships (vs. buying through other distributors)
+- Logistics network coverage (own fleet vs. partnerships)
+- Supply chain finance access (who extends credit, on what terms)
+- Information advantages (early access to pricing, capacity, policy changes)
+
+**Sub-step 9C — Data Assets**
+
+Ask: "现有系统里有哪些历史数据？大概的时间跨度、交易量级、字段完整度怎么样？有没有已经结构化的数据，还是主要在 Excel 或 ERP 里？"
+     "What historical data exists in your current systems? Rough time span, transaction
+      volume, field completeness? Is it structured in a DB or mainly in Excel/ERP?"
+
+Listen for:
+- Transaction history: years of data, number of transactions, SKU coverage
+- Pricing data: historical price points, negotiation records, contract terms
+- Demand data: order patterns, lead times, cancellation rates
+- Quality: clean and consistent vs. fragmented across systems
+- Exclusivity: is this data unique to you, or would any distributor have similar data?
+
+**Sub-step 9D — Technical Assets**
+
+Ask: "技术侧目前有哪些积累？包括已有的模型、代码库、已发表或在研的成果、与工业企业合作的项目经验。"
+     "What technical assets exist today? Models, codebases, published or ongoing
+      research, and any joint projects with industrial enterprises."
+
+Listen for:
+- Domain-specific models (fine-tuned on industrial data vs. general purpose)
+- Existing knowledge bases or ontologies in the target domain
+- Validated technical results (published evals, production deployments, POCs)
+- Relationships with industrial partners that provide data or deployment access
+
+**Sub-step 9E — Team & Execution Capacity**
+
+Ask: "除了两位创始人，现在还有哪些核心人员？商业侧和技术侧各自的执行能力怎么评估？"
+     "Beyond the two founders, who else is on the team? How would you assess execution
+      capacity on the business side and technical side respectively?"
+
+Listen for:
+- Business team: salespeople, operations, customer success
+- Technical team: engineers, ML researchers, data engineers
+- Gaps: what critical capability is missing today
+- Bandwidth: can the current team run existing business AND build the new product?
+
+**Sub-step 9F — Early Validation**
+
+Ask: "到目前为止，有没有任何概念验证？哪怕是非正式的：客户表达了兴趣、用户愿意试用、某个功能有人愿意付钱。第一个最可能买单的客户是谁？"
+     "Has any form of validation happened yet — even informal? A customer expressing
+      interest, a user willing to pilot, someone willing to pay for a feature.
+      Who is most likely to be the first paying customer?"
+
+Listen for:
+- Letters of intent, pilot agreements, paid POCs
+- Specific named potential customers (vs. vague "many customers are interested")
+- Willingness-to-pay signal: what price point, what value proposition
+- Who is the internal champion at the first customer
+
+---
+
+## Founding Team Asset Brief Template
+
+After Step 9, produce a structured summary:
+
+---
+**创始团队资产摘要**
+
+**核心市场地位：** [客户数量、关键客户描述、市场覆盖范围]
+
+**供应链资产：** [上游关系、物流覆盖、金融资源、信息优势]
+
+**数据资产：** [交易数据规模/时间跨度/完整度、独特性评估]
+
+**技术资产：** [已有模型/代码/研究成果、工业部署经验]
+
+**团队现状：** [商业侧执行力、技术侧执行力、关键缺口]
+
+**最快路径到第一个付费客户：** [具体客户、关系基础、价值主张]
+
+**不可复制的核心优势：** [竞争对手需要几年才能匹配的1-2项资产]
+---
+
+Fold this into the Product Brief from Step 8 and present the combined brief for
+user confirmation before proceeding.
