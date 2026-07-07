@@ -1,15 +1,17 @@
 ---
 name: collaboration-dialogue-archive
 description: |
-  Use this skill when the user wants to record, structure, summarize, archive, or synthesize
-  conversations with collaborators, stakeholders, executives, investors, product leaders,
-  engineers, customers, domain experts, ecosystem partners, or internal teams. Especially
-  useful for a CTO or technical leader building an AI-native business platform who needs to
-  preserve dialogue context, extract strategic assumptions, decisions, disagreements,
-  product insights, architecture implications, data opportunities, AI-native hypotheses,
-  risks, and follow-up actions. Trigger on requests such as "记录我和某人的对话",
-  "整理这次访谈", "归档会议记录", "总结合作者观点", "沉淀成战略输入",
-  "提炼AI原生平台启发", or "汇总多位合作者的共识和分歧".
+  Use this skill when the user wants to record, live-capture, structure, summarize,
+  archive, or synthesize conversations with collaborators, stakeholders, executives,
+  investors, product leaders, engineers, customers, domain experts, ecosystem partners,
+  or internal teams. Especially useful for a CTO or technical leader building an
+  AI-native business platform who needs to preserve dialogue context while a
+  conversation is still unfolding, extract strategic assumptions, decisions,
+  disagreements, product insights, architecture implications, data opportunities,
+  AI-native hypotheses, risks, and follow-up actions. Trigger on requests such as
+  "一边聊一边记录", "边对话边归档", "访谈陪跑", "我说对方说",
+  "记录我和某人的对话", "整理这次访谈", "归档会议记录", "总结合作者观点",
+  "沉淀成战略输入", "提炼AI原生平台启发", or "汇总多位合作者的共识和分歧".
 ---
 
 # Collaboration Dialogue Archive
@@ -25,6 +27,108 @@ Do not default to generic meeting minutes. Preserve what was said, why it matter
 Use the user's language. For Chinese source material, produce Chinese archives.
 
 ## Workflow
+
+## Live Capture Mode
+
+Use this mode when the user wants to record a two-person interview while it is happening, not after the full transcript is complete. One participant is always the user. The other participant is the collaborator/interviewee.
+
+### Start the Live Capture
+
+At the start, ask for exactly these fields if the user has not provided them:
+
+- Interviewee name
+- Interviewee title or role
+- Core topic of this interview
+- Purpose of this interview
+
+If the user has already provided enough context, start immediately. Do not ask a long setup questionnaire.
+
+Opening prompt example:
+
+```markdown
+请先告诉我四件事：
+- 对方姓名：
+- 对方职位/角色：
+- 本次访谈核心：
+- 本次访谈目的：
+```
+
+### Speaker Labels
+
+Expect the user to provide live input using speaker labels:
+
+- `我说：...` means the user spoke.
+- `对方说：...` means the interviewee spoke.
+- If the user says they are using recording/transcription, interpret the user's own recording as `我说` and the other person's recording as `对方说`.
+
+If speaker labels are missing but the speaker is obvious, infer cautiously. If ambiguous, ask one short clarification.
+
+### During the Conversation
+
+After each user message containing conversation content:
+
+1. Append a short incremental capture under `现场记录`, preserving whether the content came from `我说` or `对方说`.
+2. Extract only newly observed facts, opinions, assumptions, risks, and action items.
+3. Keep the response compact so the user can continue the interview naturally.
+4. When the latest meaningful content is from `对方说`, generate one recommended next question for the user to ask.
+5. The next question should advance the interview purpose, probe assumptions, surface constraints, or clarify AI-native platform implications.
+6. Do not generate the full archive unless the user asks to "收束", "整理成档案", "生成归档", "阶段小结", or similar.
+
+Default live response format:
+
+```markdown
+已记录。
+
+新增要点：
+- {new point}
+- {new point}
+
+建议下一问：
+- {one suggested question for the user to ask next}
+```
+
+If the user is speaking quickly or pasting many short fragments, use an even shorter response:
+
+```markdown
+已记录：{one-line summary}
+建议下一问：{one question}
+```
+
+### Maintain a Running State
+
+Internally maintain these buckets across turns:
+
+- `基本信息`
+- `现场记录`
+- `我方发问与表达`
+- `对方明确表达的观点`
+- `用户判断或回应`
+- `隐含假设`
+- `分歧与张力`
+- `AI原生平台启发`
+- `风险与反证`
+- `后续行动`
+- `待确认问题`
+
+When information changes, update the running state rather than treating each message as a separate archive.
+
+### Periodic Summary
+
+When the conversation becomes long or the user asks "现在小结一下", produce a short stage summary:
+
+```markdown
+## 阶段小结
+
+- 当前主线：{summary}
+- 已出现的关键观点：{points}
+- 尚未确认的问题：{questions}
+- 建议继续追问：{next questions}
+- 可能的 AI 原生平台启发：{implications}
+```
+
+### Close the Capture
+
+When the user says "收束归档", "生成完整归档", "整理成档案", or equivalent, produce the full archive using the standard archive structure below. Before finalizing, ask for missing high-value metadata only if it is essential, such as the participant role or whether sensitive information should be anonymized.
 
 ### 1. Identify the Conversation Context
 
